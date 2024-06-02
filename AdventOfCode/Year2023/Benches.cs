@@ -1,9 +1,12 @@
+using System.Text.RegularExpressions;
 using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Configs;
+using BenchmarkDotNet.Filters;
 
 namespace AdventOfCode.Year2023;
 
 #pragma warning disable CA1822
-[MemoryDiagnoser]
+
 public class Benches
 {
     private readonly string[] _day01Input = Helpers.GetInputLines(2023, 1);
