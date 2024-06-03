@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Runtime.CompilerServices;
 
 namespace AdventOfCode.Year2023;
 
@@ -19,7 +18,7 @@ public static class Day01
     public static (int, int) Run(string[] lines)
     {
         int part1 = 0, part2 = 0;
-        Parallel.ForEach(lines, (line, _) =>
+        Parallel.ForEach(lines, line =>
         {
             Interlocked.Add(ref part1, GetFirstDigit(line, false) * 10 + GetLastDigit(line, false));
             Interlocked.Add(ref part2, GetFirstDigit(line, true) * 10 + GetLastDigit(line, true));

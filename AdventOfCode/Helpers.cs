@@ -15,5 +15,5 @@ public static class Helpers
 
     public static ManualConfig GetConfig(string namePattern) => DefaultConfig.Instance
         .AddFilter(new NameFilter(name => Regex.IsMatch(name, namePattern)))
-        .AddDiagnoser(MemoryDiagnoser.Default);
+        .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(false)));
 }
