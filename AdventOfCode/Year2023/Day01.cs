@@ -70,9 +70,7 @@ public static class Day01
     private static int StringToInt(ReadOnlySpan<char> span)
     {
         if (span.Length == 1)
-        {
             return span[0] - '0';
-        }
 
         return span switch
         {
