@@ -4,8 +4,7 @@ public static class Day01
 {
     public static (int, int) Run(string[] input)
     {
-        Span<int> left = stackalloc int[input.Length];
-        Span<int> right = stackalloc int[input.Length];
+        int[] left = new int[input.Length], right = new int[input.Length];
         for (var i = 0; i < input.Length; i++)
         {
             var line = input[i];
@@ -13,8 +12,8 @@ public static class Day01
             left[i] = GetNextResult(ref enumerator, line);
             right[i] = GetNextResult(ref enumerator, line);
         }
-        left.Sort();
-        right.Sort();
+        left.AsSpan().Sort();
+        right.AsSpan().Sort();
 
         int p1 = 0, p2 = 0, j = 0;
         for (var i = 0; i < left.Length; i++)
@@ -35,7 +34,9 @@ public static class Day01
         return (p1, p2);
     }
 
-    private static int GetNextResult(ref MemoryExtensions.SpanSplitEnumerator<char> enumerator, ReadOnlySpan<char> input)
+    private static int GetNextResult(
+        ref MemoryExtensions.SpanSplitEnumerator<char> enumerator, 
+        ReadOnlySpan<char> input)
     {
         enumerator.MoveNext();
         return int.Parse(input[enumerator.Current]);
