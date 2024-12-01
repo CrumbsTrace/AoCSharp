@@ -1,7 +1,7 @@
 ﻿using AdventOfCode;
 using BenchmarkDotNet.Running;
 
-RunBenchmarks(day: 4);
+RunBenchmarks(2024, 1);
 return;
 
 static void RunBenchmarks(int? year = null, int? day = null)
