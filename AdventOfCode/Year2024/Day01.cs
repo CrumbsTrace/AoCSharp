@@ -28,9 +28,8 @@ public static class Day01
                 j++;
             }
             
-            var current = left[i];
-            p1 += Math.Abs(current - right[i]);
-            p2 += count * current;
+            p1 += Math.Abs(left[i] - right[i]);
+            p2 += count * left[i];
         }
 
         return (p1, p2);
