@@ -24,7 +24,7 @@ public static class Day01
         {
             //Take advantage of the fact that the lists are sorted
             var count = 0;
-            while (right[j] <= left[i])
+            while (j < left.Length && right[j] <= left[i])
             {
                 if (right[j] == left[i])
                     count++;
