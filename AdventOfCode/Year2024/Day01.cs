@@ -7,10 +7,14 @@ public static class Day01
         int[] left = new int[input.Length], right = new int[input.Length];
         for (var i = 0; i < input.Length; i++)
         {
-            var line = input[i];
-            var enumerator = line.AsSpan().Split("   ");
-            left[i] = GetNextResult(ref enumerator, line);
-            right[i] = GetNextResult(ref enumerator, line);
+            var line = input[i].AsSpan();
+            var length1 = line.IndexOf(' ');
+            var startIndex2 = length1 + 1;
+            while (line[startIndex2] == ' ')
+                startIndex2++;
+            
+            left[i] = int.Parse(line[..length1]);
+            right[i] = int.Parse(line[startIndex2..]);
         }
         Array.Sort(left);
         Array.Sort(right);
@@ -32,13 +36,5 @@ public static class Day01
         }
 
         return (p1, p2);
-    }
-
-    private static int GetNextResult(
-        ref MemoryExtensions.SpanSplitEnumerator<char> enumerator, 
-        ReadOnlySpan<char> input)
-    {
-        enumerator.MoveNext();
-        return int.Parse(input[enumerator.Current]);
     }
 }
