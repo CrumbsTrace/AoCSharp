@@ -12,8 +12,8 @@ public static class Day01
             left[i] = GetNextResult(ref enumerator, line);
             right[i] = GetNextResult(ref enumerator, line);
         }
-        left.AsSpan().Sort();
-        right.AsSpan().Sort();
+        Array.Sort(left);
+        Array.Sort(right);
 
         int p1 = 0, p2 = 0, j = 0;
         for (var i = 0; i < left.Length; i++)
