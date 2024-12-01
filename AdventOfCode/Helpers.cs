@@ -14,27 +14,6 @@ public static partial class Helpers
 
     public static string[] GetInputLines(int year, int day) => File.ReadAllLines(Path.Combine(BasePath, $"Year{year}/inputs/day{day:D2}.txt"));
     
-    public static Dictionary<T, int> CountsOrdered<T>(this List<T> list)
-        where T : IEquatable<T>
-    {
-        var counts = new Dictionary<T, int>();
-        var previous = list[0];
-        var currentCount = 1;
-        foreach (var x in CollectionsMarshal.AsSpan(list)[1..])
-        {
-            if (x.Equals(previous))
-                currentCount++;
-            else
-            {
-                counts.Add(previous, currentCount); 
-                previous = x;
-                currentCount = 1;
-            }
-        };
-        counts.Add(previous, 1);
-        return counts;
-    }
-    
     public static ManualConfig GetConfig(string namePattern) => DefaultConfig.Instance
         .AddFilter(new NameFilter(name => Regex.IsMatch(name, namePattern)))
         .AddDiagnoser(new MemoryDiagnoser(new MemoryDiagnoserConfig(false)));
