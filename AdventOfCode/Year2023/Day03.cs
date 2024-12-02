@@ -2,17 +2,20 @@ namespace AdventOfCode.Year2023;
 
 public static class Day03
 {
-    public static (int, int) Run(ReadOnlySpan<string> lines)
+    public static (int, int) Run(string[] lines)
     {
         var width = lines[0].Length;
         var height = lines.Length;
         var gearParts = new Dictionary<int, (int product, int count)>();
         var part1 = 0;
-        for (var y = 0; y < height; y++)
+        
+        // Precalculate partNumber and adjacent symbols
+        var gearSymbols = new List<(int, List<(int, char)>)>[height];
+        Parallel.For(0, height, y =>
         {
+            var lineResults = new List<(int, List<(int, char)>)>();
             var line = lines[y];
-            var x = 0;
-            while (x < width)
+            for (var x = 0; x < width; x++)
             {
                 var partNumber = 0;
                 var xEnd = x;
@@ -23,27 +26,37 @@ public static class Day03
                 {
                     var adjacentSymbols = GetAdjacentSymbols(x, xEnd - 1, y, lines);
                     if (adjacentSymbols.Count > 0)
-                    {
-                        part1 += partNumber;
-                        foreach (var (index, symbol) in adjacentSymbols)
-                        {
-                            if (symbol != '*') 
-                                continue;
-                            var (product, count) = gearParts.GetValueOrDefault(index, (0, 0));
-                            gearParts[index] = count switch
-                            {
-                                0 => (partNumber, 1),
-                                1 => (product * partNumber, 2),
-                                _ => (product, count + 1)
-                            };
-                        }
-                    }
+                        lineResults.Add((partNumber, adjacentSymbols));
                 }
-                
-                x = xEnd + 1;
+
+                x = xEnd;
+            }
+
+            gearSymbols[y] = lineResults;
+        });
+
+        for (var y = 0; y < height; y++)
+        {
+            var lineResults = gearSymbols[y];
+            
+            foreach (var (partNumber, adjacentSymbols) in lineResults)
+            {
+                part1 += partNumber;
+                foreach (var (index, symbol) in adjacentSymbols)
+                {
+                    if (symbol != '*')
+                        continue;
+                    var (product, count) = gearParts.GetValueOrDefault(index, (0, 0));
+                    gearParts[index] = count switch
+                    {
+                        0 => (partNumber, 1),
+                        1 => (product * partNumber, 2),
+                        _ => (product, count + 1)
+                    };
+                }
             }
         }
-        
+
         var part2 = gearParts.Values.Where(p => p.count == 2).Select(p => p.product).Sum();
         return (part1, part2);
     }
@@ -56,7 +69,7 @@ public static class Day03
         for (var yAdj = y - 1; yAdj <= y + 1; yAdj++)
         {
             if (yAdj < 0 || yAdj >= height) continue;
-            
+
             for (var xAdj = x - 1; xAdj <= xEnd + 1; xAdj++)
             {
                 if (xAdj < 0 || xAdj >= width) continue;
@@ -78,6 +91,7 @@ public static class Day03
             partNumber = partNumber * 10 + (line[x] - '0');
             x++;
         }
+
         return (partNumber, x);
     }
 }
